@@ -8,6 +8,11 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 # Directory that contains music files mounted from the NAS.
 MUSIC_DIR = Path(os.getenv("NAS_PATH", "/music"))
 
+# Build timestamp provided at Docker image creation time. If not set,
+# defaults to "unknown". This is used to display when the running
+# container was built/deployed.
+BUILD_TIMESTAMP = os.getenv("BUILD_TIMESTAMP", "unknown")
+
 
 def _list_music_files() -> list[Path]:
     """Return a list of all files under ``MUSIC_DIR`` recursively."""
@@ -44,3 +49,8 @@ def get_random_music_file() -> str:
     if not files:
         return "No music files found"
     return random.choice([f.name for f in files])
+
+
+def get_build_timestamp() -> str:
+    """Return the build/deploy timestamp for the running container."""
+    return BUILD_TIMESTAMP

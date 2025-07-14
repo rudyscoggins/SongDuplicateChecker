@@ -1,4 +1,6 @@
 FROM python:3.12-slim
+ARG BUILD_TIMESTAMP
+ENV BUILD_TIMESTAMP=${BUILD_TIMESTAMP:-unknown}
 WORKDIR /app
 
 # Ensure the application package is importable by adding the `src` directory
