@@ -11,9 +11,14 @@ templates = Jinja2Templates(directory=str(utils.TEMPLATES_DIR))
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     random_file = utils.get_random_music_file()
+    diagnostics = utils.get_nas_diagnostics()
     return templates.TemplateResponse(
         "index.html",
-        {"request": request, "random_file": random_file},
+        {
+            "request": request,
+            "random_file": random_file,
+            "diagnostics": diagnostics,
+        },
     )
 
 @app.get("/health")
