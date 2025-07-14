@@ -12,12 +12,14 @@ templates = Jinja2Templates(directory=str(utils.TEMPLATES_DIR))
 async def read_root(request: Request):
     random_file = utils.get_random_music_file()
     diagnostics = utils.get_nas_diagnostics()
+    build_timestamp = utils.get_build_timestamp()
     return templates.TemplateResponse(
         "index.html",
         {
             "request": request,
             "random_file": random_file,
             "diagnostics": diagnostics,
+            "build_timestamp": build_timestamp,
         },
     )
 
