@@ -9,6 +9,11 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 MUSIC_DIR = Path(os.getenv("NAS_PATH", "/music"))
 
 
+def _list_music_files() -> list[Path]:
+    """Return a list of all files under ``MUSIC_DIR`` recursively."""
+    return [Path(root) / name for root, dirs, files in os.walk(MUSIC_DIR) for name in files]
+
+
 def get_nas_diagnostics() -> str:
     """Return a message with basic diagnostics about ``MUSIC_DIR``."""
     path_str = str(MUSIC_DIR)
@@ -17,7 +22,7 @@ def get_nas_diagnostics() -> str:
     if not MUSIC_DIR.is_dir():
         return f"NAS path {path_str} is not a directory"
     try:
-        file_count = len([p for p in MUSIC_DIR.rglob("*") if p.is_file()])
+        file_count = len(_list_music_files())
     except Exception as exc:  # pragma: no cover - diagnostics only
         return f"Error accessing {path_str}: {exc}"
     return f"NAS path {path_str} accessible, {file_count} files visible"
@@ -35,7 +40,7 @@ def get_random_music_file() -> str:
     """
     if not MUSIC_DIR.exists():
         return f"Music directory {MUSIC_DIR} not found"
-    files = [p.name for p in MUSIC_DIR.rglob("*") if p.is_file()]
+    files = _list_music_files()
     if not files:
         return "No music files found"
-    return random.choice(files)
+    return random.choice([f.name for f in files])
