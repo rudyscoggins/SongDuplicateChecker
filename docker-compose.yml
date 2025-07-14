@@ -4,13 +4,15 @@ services:
     image: ghcr.io/rudyscoggins/songduplicatechecker:latest
     build: .
     user: "1000:1000"
+    restart: unless-stopped
     environment:
       DATA_DIR: /data
+      NAS_PATH: /music
     ports:
       - "5443:8000"
     volumes:
       - ./data:/data
-      - /home/pi/NAS/music/SongDuplicateChecker:/music
+      - /home/pi/NAS/music/Elysium:/music
     labels:
       - com.centurylinklabs.watchtower.scope=songduplicatechecker
   watchtower:

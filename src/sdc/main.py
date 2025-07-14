@@ -10,7 +10,11 @@ templates = Jinja2Templates(directory=str(utils.TEMPLATES_DIR))
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    random_file = utils.get_random_music_file()
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request, "random_file": random_file},
+    )
 
 @app.get("/health")
 async def health():
