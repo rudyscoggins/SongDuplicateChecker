@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  songduplicatechecker:
+    image: ghcr.io/rudyscoggins/songduplicatechecker:latest
+    user: "1000:1000"
+    environment:
+      DATA_DIR: /data
+    ports:
+      - "5443:8000"
+    volumes:
+      - ./data:/data
+      - /home/pi/NAS/music/SongDuplicateChecker:/music
+    labels:
+      - com.centurylinklabs.watchtower.scope=songduplicatechecker
+  watchtower:
+    image: containrrr/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - .env
+    command: >
+      --interval 300
+      --scope songduplicatechecker
+      -n shoutrrr
+      --notification-url=telegram://${WATCHTOWER_TELEGRAM_TOKEN}@telegram?channels=${WATCHTOWER_TELEGRAM_CHAT_ID}
