@@ -2,11 +2,13 @@ from pathlib import Path
 import os
 import random
 
+from . import settings
+
 BASE_DIR = Path(__file__).resolve().parent
 TEMPLATES_DIR = BASE_DIR / "templates"
 
 # Directory that contains music files mounted from the NAS.
-MUSIC_DIR = Path(os.getenv("NAS_PATH", "/music"))
+MUSIC_DIR = settings.NAS_PATH
 
 # Build timestamp provided at Docker image creation time. If not set,
 # defaults to "unknown". This is used to display when the running
